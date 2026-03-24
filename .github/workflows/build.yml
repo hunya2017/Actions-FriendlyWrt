@@ -102,13 +102,6 @@ jobs:
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
 
-    - name: SSH调试(make menuconfig)
-      if: github.event.inputs.enable_ssh == 'true'
-      uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 30
-      with:
-        limit-access-to-actor: true
-
     - name: 准备dot config 和feeds
       run: |
         cd project
@@ -127,7 +120,14 @@ jobs:
       uses: mxschmitt/action-tmate@v3
       timeout-minutes: 30
       with:
-        limit-access-to-actor: true
+        limit-access-to-actor: false
+
+    # - name: SSH调试会话
+    #   if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh != 'false') || contains(github.event.action, 'ssh')
+    #   uses: mxschmitt/action-tmate@v3
+    #   timeout-minutes: 40
+    #   with:
+    #     limit-access-to-actor: false
 
     - name: 下载软件包
       run: |
@@ -135,13 +135,6 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-
-    - name: SSH调试(编译前make menuconfig)
-      if: github.event.inputs.enable_ssh == 'true'
-      uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 30
-      with:
-        limit-access-to-actor: true
 
     - name: 编译FriendlyWrt
       id: compile
