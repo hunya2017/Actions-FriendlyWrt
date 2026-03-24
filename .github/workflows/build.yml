@@ -108,7 +108,6 @@ jobs:
       timeout-minutes: 30
       with:
         limit-access-to-actor: true
-        detached: true
 
     - name: 准备dot config 和feeds
       run: |
@@ -129,7 +128,6 @@ jobs:
       timeout-minutes: 30
       with:
         limit-access-to-actor: true
-        detached: true
 
     - name: 下载软件包
       run: |
@@ -144,7 +142,6 @@ jobs:
       timeout-minutes: 30
       with:
         limit-access-to-actor: true
-        detached: true
 
     - name: 编译FriendlyWrt
       id: compile
