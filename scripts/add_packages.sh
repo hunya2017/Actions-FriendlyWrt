@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# {{ Add luci-app-momo
+(cd friendlywrt/package && {
+    [ -d luci-app-momo ] && rm -rf luci-app-momo
+    git clone https://github.com/nikkinikki-org/OpenWrt-momo.git --depth=1 -b main
+})
+echo "CONFIG_PACKAGE_luci-app-momo=y" >> configs/rockchip/01-nanopi
+# }}
+
 # {{ Add luci-app-diskman
 (cd friendlywrt && {
     mkdir -p package/luci-app-diskman
@@ -17,7 +25,7 @@ EOL
 # {{ Add luci-theme-argon
 (cd friendlywrt/package && {
     [ -d luci-theme-argon ] && rm -rf luci-theme-argon
-    git clone https://github.com/jerrykuku/luci-theme-argon.git --depth 1 -b master
+    git clone https://github.com/jerrykuku/luci-theme-argon.git --depth=1 -b master
 })
 echo "CONFIG_PACKAGE_luci-theme-argon=y" >> configs/rockchip/01-nanopi
 sed -i -e 's/function init_theme/function old_init_theme/g' friendlywrt/target/linux/rockchip/armv8/base-files/root/setup.sh

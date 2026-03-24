@@ -4,7 +4,7 @@
       target:
         description: '编译目标'
         required: false
-        default: 'rk3588'
+        default: 'rk3566'
         type: choice
         options:
         - rk3588
@@ -19,6 +19,12 @@
         required: false
         default: false
         type: boolean
+      enable_ssh:
+        description: '启用SSH调试(用于make menuconfig)'
+        required: false
+        default: false
+        type: boolean
+
 jobs:
   prepare_release:
     runs-on: ubuntu-22.04
@@ -96,6 +102,14 @@ jobs:
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
 
+    - name: SSH调试(make menuconfig)
+      if: github.event.inputs.enable_ssh == 'true'
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 30
+      with:
+        limit-access-to-actor: true
+        detached: true
+
     - name: 准备dot config 和feeds
       run: |
         cd project
@@ -109,12 +123,28 @@ jobs:
         EOL
         DEBUG_DOT_CONFIG=1 ./build.sh friendlywrt
 
+    - name: SSH调试(make menuconfig配置)
+      if: github.event.inputs.enable_ssh == 'true'
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 30
+      with:
+        limit-access-to-actor: true
+        detached: true
+
     - name: 下载软件包
       run: |
         cd project/friendlywrt
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+
+    - name: SSH调试(编译前make menuconfig)
+      if: github.event.inputs.enable_ssh == 'true'
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 30
+      with:
+        limit-access-to-actor: true
+        detached: true
 
     - name: 编译FriendlyWrt
       id: compile
