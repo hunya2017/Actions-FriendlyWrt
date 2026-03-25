@@ -81,3 +81,11 @@ echo "CONFIG_PACKAGE_zerotier=y" >> configs/rockchip/01-nanopi
 echo "CONFIG_PACKAGE_vlmcsd=y" >> configs/rockchip/01-nanopi
 echo "CONFIG_PACKAGE_luci-app-vlmcsd=y" >> configs/rockchip/01-nanopi
 # }}
+
+# {{ Add sing-box
+(cd friendlywrt/package && {
+    [ -d sing-box ] && rm -rf sing-box
+    git clone https://github.com/SagerNet/sing-box.git --depth=1
+})
+echo "CONFIG_PACKAGE_sing-box=y" >> configs/rockchip/01-nanopi
+# }}
