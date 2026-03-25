@@ -59,18 +59,18 @@ EOL
 echo "CONFIG_PACKAGE_luci-app-argon-config=y" >> configs/rockchip/01-nanopi
 # }}
 
-# {{ Add ZeroTier
-(cd friendlywrt/package && {
-    [ -d luci-app-zerotier ] && rm -rf luci-app-zerotier
-    git clone https://github.com/immortalwrt/luci.git --depth=1 -b openwrt-24.10 applications/luci-app-zerotier
-})
-(cd friendlywrt/package && {
-    [ -d zerotier ] && rm -rf zerotier
-    git clone https://github.com/immortalwrt/packages.git --depth=1 -b openwrt-24.10 net/zerotier
-})
-echo "CONFIG_PACKAGE_luci-app-zerotier=y" >> configs/rockchip/01-nanopi
-echo "CONFIG_PACKAGE_zerotier=y" >> configs/rockchip/01-nanopi
-# }}
+# # {{ Add ZeroTier
+# (cd friendlywrt/package && {
+#     [ -d luci-app-zerotier ] && rm -rf luci-app-zerotier
+#     git clone https://github.com/immortalwrt/luci.git --depth=1 -b openwrt-24.10 applications/luci-app-zerotier
+# })
+# (cd friendlywrt/package && {
+#     [ -d zerotier ] && rm -rf zerotier
+#     git clone https://github.com/immortalwrt/packages.git --depth=1 -b openwrt-24.10 net/zerotier
+# })
+# echo "CONFIG_PACKAGE_luci-app-zerotier=y" >> configs/rockchip/01-nanopi
+# echo "CONFIG_PACKAGE_zerotier=y" >> configs/rockchip/01-nanopi
+# # }}
 
 # # {{ Add vlmcsd
 # (cd friendlywrt/package && {
