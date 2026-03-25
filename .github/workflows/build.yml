@@ -55,7 +55,11 @@ jobs:
     strategy:
       matrix:
         VERSION: [ '24.10' ]
+<<<<<<< HEAD
         SET: [ docker, non-docker ]
+=======
+        SET: [ docker , non-docker]
+>>>>>>> 702b9069274eef0e30153ebadde481c472542107
 
     steps:
     - name: 检出代码
@@ -152,10 +156,8 @@ jobs:
         cd project/friendlywrt
         make -j1 V=s
 
-    - name: 收集固件、软件包和构建信息
-      run: |
-        cd project/friendlywrt
 
+<<<<<<< HEAD
         # 创建收集目录（放到仓库根目录）
         mkdir -p ../../artifact/firmware
         mkdir -p ../../artifact/packages
@@ -216,6 +218,8 @@ jobs:
         tag: ${{ needs.prepare_release.outputs.release_tag }}
         overwrite: true
         file_glob: true
+=======
+>>>>>>> 702b9069274eef0e30153ebadde481c472542107
 
     - name: 创建rootfs包
       id: create_rootfs_package
