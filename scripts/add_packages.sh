@@ -72,20 +72,20 @@ echo "CONFIG_PACKAGE_luci-app-zerotier=y" >> configs/rockchip/01-nanopi
 echo "CONFIG_PACKAGE_zerotier=y" >> configs/rockchip/01-nanopi
 # }}
 
-# {{ Add vlmcsd
-(cd friendlywrt/package && {
-    [ -d vlmcsd ] && rm -rf vlmcsd
-    git clone https://github.com/immortalwrt/packages.git --depth=1 -b openwrt-24.10 net/vlmcsd
-})
-(cd friendlywrt/package && {
-    [ -d luci-app-vlmcsd ] && rm -rf luci-app-vlmcsd
-    git clone https://github.com/immortalwrt/luci.git --depth=1 -b openwrt-24.10 applications/luci-app-vlmcsd
-})
-cat >> configs/rockchip/01-nanopi <<EOL
-CONFIG_PACKAGE_vlmcsd=y
-CONFIG_PACKAGE_luci-app-vlmcsd=y
-EOL
-# }}
+# # {{ Add vlmcsd
+# (cd friendlywrt/package && {
+#     [ -d vlmcsd ] && rm -rf vlmcsd
+#     git clone https://github.com/immortalwrt/packages.git --depth=1 -b openwrt-24.10 net/vlmcsd
+# })
+# (cd friendlywrt/package && {
+#     [ -d luci-app-vlmcsd ] && rm -rf luci-app-vlmcsd
+#     git clone https://github.com/immortalwrt/luci.git --depth=1 -b openwrt-24.10 applications/luci-app-vlmcsd
+# })
+# cat >> configs/rockchip/01-nanopi <<EOL
+# CONFIG_PACKAGE_vlmcsd=y
+# CONFIG_PACKAGE_luci-app-vlmcsd=y
+# EOL
+# # }}
 
 # {{ Add sing-box
 (cd friendlywrt/package && {
