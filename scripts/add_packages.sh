@@ -78,8 +78,14 @@ echo "CONFIG_PACKAGE_zerotier=y" >> configs/rockchip/01-nanopi
     [ -d luci-app-vlmcsd ] && rm -rf luci-app-vlmcsd
     git clone https://github.com/immortalwrt/luci.git --depth=1 -b openwrt-24.10 applications/luci-app-vlmcsd
 })
-echo "CONFIG_PACKAGE_vlmcsd=y" >> configs/rockchip/01-nanopi
-echo "CONFIG_PACKAGE_luci-app-vlmcsd=y" >> configs/rockchip/01-nanopi
+# Disable Rust version, use C version only to avoid build errors
+cat >> configs/rockchip/01-nanopi <<EOL
+CONFIG_PACKAGE_vlmcsd=y
+CONFIG_PACKAGE_vlmcsd-full=n
+CONFIG_PACKAGE_vlmcsd-full-rust=n
+CONFIG_PACKAGE_vlmcsd-mini=n
+CONFIG_PACKAGE_luci-app-vlmcsd=y
+EOL
 # }}
 
 # {{ Add sing-box
