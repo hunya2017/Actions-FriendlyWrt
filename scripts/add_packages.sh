@@ -45,7 +45,10 @@ sed -i -e '/boardname=/r /tmp/appendtext.txt' friendlywrt/target/linux/rockchip/
     [ -d istore ] && rm -rf istore
     git clone https://github.com/linkease/istore.git --depth=1
 })
-echo "CONFIG_PACKAGE_istore=y" >> configs/rockchip/01-nanopi
+cat >> configs/rockchip/01-nanopi <<EOL
+CONFIG_PACKAGE_istore=y
+CONFIG_PACKAGE_luci-app-istore=y
+EOL
 # }}
 
 # {{ Add luci-app-argon-config
