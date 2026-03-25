@@ -116,12 +116,6 @@ apt-get -y install python3-dev python3-setuptools
 # for android 14+ (kernel-6.1)
 apt install dwarves lz4
 
-# for Rust packages (e.g., vlmcsd-full-rust)
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-export PATH="$HOME/.cargo/bin:$PATH"
-rustup default stable
-rustup target add x86_64-unknown-linux-musl aarch64-unknown-linux-musl
-
 # install friendlyelec-toolchain
 [ -d fa-toolchain ] || git clone https://github.com/friendlyarm/prebuilts.git -b master --depth 1 fa-toolchain
 (cat fa-toolchain/gcc-x64/toolchain-4.9.3-armhf.tar.gz* | tar xz -C /)
