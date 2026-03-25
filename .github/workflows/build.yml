@@ -54,8 +54,8 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id
     strategy:
       matrix:
-        VERSION: [ '23.05', '24.10' ]
-        SET: [ docker, non-docker ]
+        VERSION: [ '24.10' ]
+        SET: [ docker ]
 
     steps:
     - name: 检出代码
@@ -86,7 +86,7 @@ jobs:
         mkdir project
         cd project
         repo init --depth=1 -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v${{ matrix.VERSION }} \
-                -m rk3399.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+                -m ${{ github.event.inputs.target }}.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
 
         repo sync -c friendlywrt --no-clone-bundle
         repo sync -c configs --no-clone-bundle
@@ -102,14 +102,14 @@ jobs:
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
 
-    - name: 准备dot config 和feeds
+    - name: 准备 dot config和 feeds
       run: |
         cd project
         [ "${{ matrix.SET }}" == "docker" ] && SUFFIX="-docker"
         DIRNAME=friendlywrt$(echo ${{ matrix.VERSION }}|awk -F . '{print $1}')${SUFFIX}
         CONFIG=rockchip${SUFFIX}
         cat > .current_config.mk <<EOL
-        . device/friendlyelec/rk3399/base.mk
+        . device/friendlyelec/${{ github.event.inputs.target }}/base.mk
         TARGET_IMAGE_DIRNAME=${DIRNAME}
         TARGET_FRIENDLYWRT_CONFIG=${CONFIG}
         EOL
@@ -177,8 +177,8 @@ jobs:
 
     strategy:
       matrix:
-        VERSION: [ '23.05', '24.10' ]
-        CPU: [ rk3328, rk3528, rk3399, rk3566, rk3568, rk3576, rk3588 ]
+        VERSION: [ '24.10' ]
+        CPU: [ rk3566 ]
         SET: [ docker, non-docker ]
     steps:
     - name: 检出代码

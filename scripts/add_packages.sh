@@ -39,3 +39,45 @@ function init_theme() {
 EOL
 sed -i -e '/boardname=/r /tmp/appendtext.txt' friendlywrt/target/linux/rockchip/armv8/base-files/root/setup.sh
 # }}
+
+# {{ Add iStore
+(cd friendlywrt/package && {
+    [ -d istore ] && rm -rf istore
+    git clone https://github.com/linkease/istore.git --depth=1
+})
+echo "CONFIG_PACKAGE_istore=y" >> configs/rockchip/01-nanopi
+# }}
+
+# {{ Add luci-app-argon-config
+(cd friendlywrt/package && {
+    [ -d luci-app-argon-config ] && rm -rf luci-app-argon-config
+    git clone https://github.com/jerrykuku/luci-app-argon-config.git --depth=1
+})
+echo "CONFIG_PACKAGE_luci-app-argon-config=y" >> configs/rockchip/01-nanopi
+# }}
+
+# {{ Add ZeroTier
+(cd friendlywrt/package && {
+    [ -d luci-app-zerotier ] && rm -rf luci-app-zerotier
+    git clone https://github.com/immortalwrt/luci.git --depth=1 -b openwrt-24.10 applications/luci-app-zerotier
+})
+(cd friendlywrt/package && {
+    [ -d zerotier ] && rm -rf zerotier
+    git clone https://github.com/immortalwrt/packages.git --depth=1 -b openwrt-24.10 net/zerotier
+})
+echo "CONFIG_PACKAGE_luci-app-zerotier=y" >> configs/rockchip/01-nanopi
+echo "CONFIG_PACKAGE_zerotier=y" >> configs/rockchip/01-nanopi
+# }}
+
+# {{ Add vlmcsd
+(cd friendlywrt/package && {
+    [ -d vlmcsd ] && rm -rf vlmcsd
+    git clone https://github.com/immortalwrt/packages.git --depth=1 -b openwrt-24.10 net/vlmcsd
+})
+(cd friendlywrt/package && {
+    [ -d luci-app-vlmcsd ] && rm -rf luci-app-vlmcsd
+    git clone https://github.com/immortalwrt/luci.git --depth=1 -b openwrt-24.10 applications/luci-app-vlmcsd
+})
+echo "CONFIG_PACKAGE_vlmcsd=y" >> configs/rockchip/01-nanopi
+echo "CONFIG_PACKAGE_luci-app-vlmcsd=y" >> configs/rockchip/01-nanopi
+# }}
