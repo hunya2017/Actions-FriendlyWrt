@@ -152,63 +152,7 @@ jobs:
         cd project/friendlywrt
         make -j1 V=s
 
-    - name: 收集固件、软件包和构建信息
-      run: |
-        cd project/friendlywrt
 
-        # 创建收集目录
-        mkdir -p ../artifact/firmware
-        mkdir -p ../artifact/packages
-        mkdir -p ../artifact/buildinfo
-
-        # 复制所有固件相关文件
-        echo "复制固件文件..."
-        find ./bin/targets/ -type f \( -name "*.bin" -o -name "*.gz" -o -name "*.img" -o -name "*.info" -o -name "*.buildinfo" -o -name "*.zst" -o -name "*.manifest" \) -not -path "*/packages/*" -exec cp -f -t ../artifact/firmware/ {} + || true
-
-        # 复制所有软件包
-        echo "复制软件包..."
-        find ./bin -name "*.ipk" -exec cp -f {} ../artifact/packages/ \;
-
-        # 复制构建信息
-        echo "复制构建信息..."
-        cp -f .config "../artifact/buildinfo/config"
-        cp -f feeds.conf.default ../artifact/buildinfo/ || true
-        find ./bin/targets/ -type f \( -name "*.buildinfo" -o -name "*.manifest" \) -exec cp -f {} ../artifact/buildinfo/ \; || true
-
-        # 显示收集的文件
-        echo "=== 固件文件 ==="
-        ls -lh ../artifact/firmware/ | head -20
-        echo "=== 软件包数量 ==="
-        ls ../artifact/packages/ | wc -l
-        echo "=== 构建信息 ==="
-        ls -lh ../artifact/buildinfo/
-
-    - name: 上传固件文件
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./artifact/firmware/*
-        tag: ${{ needs.prepare_release.outputs.release_tag }}
-        overwrite: true
-        file_glob: true
-
-    - name: 上传软件包
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./artifact/packages/*
-        tag: ${{ needs.prepare_release.outputs.release_tag }}
-        overwrite: true
-        file_glob: true
-
-    - name: 上传构建信息
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./artifact/buildinfo/*
-        tag: ${{ needs.prepare_release.outputs.release_tag }}
-        overwrite: true
-        file_glob: true
 
     - name: 创建rootfs包
       id: create_rootfs_package
