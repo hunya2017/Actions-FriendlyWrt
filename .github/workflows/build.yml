@@ -469,11 +469,11 @@ jobs:
       run: |
         cd project
 
-        echo "构建 SD 镜像"
-        ./build.sh sd-img
+        # echo "构建 SD 镜像"
+        # ./build.sh sd-img
 
         echo "构建所有固件"
-        ./build.sh
+        ./build.sh all
 
         mkdir -p ../artifact
 
