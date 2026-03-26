@@ -152,7 +152,9 @@ jobs:
         cd project/friendlywrt
         make -j1 V=s
 
-
+    - name: 收集固件、软件包和构建信息
+      run: |
+        cd project/friendlywrt
         # 创建收集目录（放到仓库根目录）
         mkdir -p ../../artifact/firmware
         mkdir -p ../../artifact/packages
