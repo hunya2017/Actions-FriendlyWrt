@@ -453,20 +453,48 @@ jobs:
         #     ;;
         # esac
 
-    - name: 构建 SD镜像
-      id: build_sd_image
+    # - name: 构建 SD镜像
+    #   id: build_sd_image
+    #   run: |
+    #     cd project
+    #     ./build.sh sd-img
+    #     mv out/${{ steps.config.outputs.img_filename }} ../artifact/
+    #     cd ../artifact/
+    #     gzip *.img
+
+    - name: 构建镜像
+      id: build_images
       run: |
         cd project
-        ./build.sh sd-img
-        mv out/${{ steps.config.outputs.img_filename }} ../artifact/
-        cd ../artifact/
-        gzip *.img
 
-    - name: 上传镜像到发布
+        echo "构建 SD 镜像"
+        ./build.sh sd-img
+
+        echo "构建所有固件"
+        ./build.sh
+
+        mkdir -p ../artifact
+
+        mv out/*.img ../artifact/ || true
+        mv out/*.img.gz ../artifact/ || true
+
+        cd ../artifact
+        gzip -f *.img || true
+
+    # - name: 上传镜像到发布
+    #   uses: svenstaro/upload-release-action@v2
+    #   with:
+    #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+    #     file: ./artifact/${{ steps.config.outputs.img_filename }}.gz
+    #     asset_name: ${{ steps.config.outputs.img_filename }}.gz
+    #     tag: ${{ needs.prepare_release.outputs.release_tag }}
+    #     overwrite: true
+
+    - name: 上传所有镜像
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./artifact/${{ steps.config.outputs.img_filename }}.gz
-        asset_name: ${{ steps.config.outputs.img_filename }}.gz
+        file: ./artifact/*
         tag: ${{ needs.prepare_release.outputs.release_tag }}
         overwrite: true
+        file_glob: true
